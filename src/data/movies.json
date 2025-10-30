@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Inception",
+    "genre": "Sci-Fi / Thriller",
+    "rating": 4.8,
+    "year": 2010,
+    "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=600&fit=crop",
+    "description": "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea."
+  },
+  {
+    "id": 2,
+    "title": "The Dark Knight",
+    "genre": "Action / Crime",
+    "rating": 4.9,
+    "year": 2008,
+    "poster": "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400&h=600&fit=crop",
+    "description": "When the menace known as the Joker wreaks havoc on Gotham, Batman must accept one of the greatest tests."
+  },
+  {
+    "id": 3,
+    "title": "Interstellar",
+    "genre": "Sci-Fi / Drama",
+    "rating": 4.7,
+    "year": 2014,
+    "poster": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&h=600&fit=crop",
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
+  },
+  {
+    "id": 4,
+    "title": "The Shawshank Redemption",
+    "genre": "Drama",
+    "rating": 4.9,
+    "year": 1994,
+    "poster": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=600&fit=crop",
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption."
+  },
+  {
+    "id": 5,
+    "title": "Pulp Fiction",
+    "genre": "Crime / Drama",
+    "rating": 4.6,
+    "year": 1994,
+    "poster": "https://images.unsplash.com/photo-1594908900066-3f47337549d8?w=400&h=600&fit=crop",
+    "description": "The lives of two mob hitmen, a boxer, and a pair of diner bandits intertwine in four tales of violence."
+  },
+  {
+    "id": 6,
+    "title": "The Matrix",
+    "genre": "Sci-Fi / Action",
+    "rating": 4.7,
+    "year": 1999,
+    "poster": "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=600&fit=crop",
+    "description": "A computer hacker learns about the true nature of his reality and his role in the war against its controllers."
+  },
+  {
+    "id": 7,
+    "title": "Forrest Gump",
+    "genre": "Drama / Romance",
+    "rating": 4.8,
+    "year": 1994,
+    "poster": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=600&fit=crop",
+    "description": "The presidencies of Kennedy and Johnson unfold through the perspective of an Alabama man."
+  },
+  {
+    "id": 8,
+    "title": "The Godfather",
+    "genre": "Crime / Drama",
+    "rating": 4.9,
+    "year": 1972,
+    "poster": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&h=600&fit=crop",
+    "description": "The aging patriarch of an organized crime dynasty transfers control to his reluctant son."
+  },
+  {
+    "id": 9,
+    "title": "Fight Club",
+    "genre": "Drama",
+    "rating": 4.6,
+    "year": 1999,
+    "poster": "https://images.unsplash.com/photo-1574267432644-f610cab5068b?w=400&h=600&fit=crop",
+    "description": "An insomniac office worker forms an underground fight club with a soap salesman."
+  },
+  {
+    "id": 10,
+    "title": "Gladiator",
+    "genre": "Action / Drama",
+    "rating": 4.7,
+    "year": 2000,
+    "poster": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=600&fit=crop",
+    "description": "A former Roman General seeks vengeance against the corrupt emperor who murdered his family."
+  }
+]
