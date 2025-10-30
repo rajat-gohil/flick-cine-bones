@@ -110,7 +110,15 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Clash Display', 'Inter', sans-serif;
+  }
+  
+  button, .btn {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
   }
 }
