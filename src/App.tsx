@@ -12,6 +12,8 @@ import Favorites from "./pages/Favorites";
 import Settings from "./pages/Settings";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import RoomSetup from "./pages/RoomSetup";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/room" element={<RoomSetup />} />
               <Route path="/swipe" element={<Swipe />} />
               <Route path="/history" element={<History />} />
               <Route path="/favorites" element={<Favorites />} />

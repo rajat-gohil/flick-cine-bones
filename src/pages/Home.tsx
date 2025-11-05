@@ -26,12 +26,19 @@ const Home = () => {
           Swipe up to like, swipe down to skip. Find your perfect movie match in seconds.
         </p>
 
-        <Link to="/swipe">
-          <Button size="lg" className="text-lg px-8 py-6 rounded-full group">
-            Start Swiping
-            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
-        </Link>
+        <div className="flex gap-4 justify-center">
+          <Link to="/room">
+            <Button size="lg" className="text-lg px-8 py-6 rounded-full group">
+              Start Matching
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+          <Link to="/auth">
+            <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-full">
+              Sign In
+            </Button>
+          </Link>
+        </div>
       </section>
 
       {/* Featured Movies */}
