@@ -14,6 +14,8 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import RoomSetup from "./pages/RoomSetup";
+import RoomWaiting from "./pages/RoomWaiting";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -28,7 +30,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/room" element={<RoomSetup />} />
+              <Route path="/waiting" element={<RoomWaiting />} />
               <Route path="/swipe" element={<Swipe />} />
               <Route path="/history" element={<History />} />
               <Route path="/favorites" element={<Favorites />} />

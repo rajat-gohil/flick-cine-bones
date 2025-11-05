@@ -16,6 +16,24 @@ const RoomSetup = () => {
   const [roomCode, setRoomCode] = useState("");
   const [genre, setGenre] = useState("");
 
+  const [customGenres, setCustomGenres] = useState<any[]>([]);
+
+  useEffect(() => {
+    loadCustomGenres();
+  }, []);
+
+  const loadCustomGenres = async () => {
+    const { data } = await supabase
+      .from("custom_genres")
+      .select("*")
+      .eq("is_active", true)
+      .order("name");
+    
+    if (data) {
+      setCustomGenres(data);
+    }
+  };
+
   const genres = [
     "Action",
     "Comedy",
@@ -54,10 +72,9 @@ const RoomSetup = () => {
 
       if (error) throw error;
 
-      toast.success(`Room created! Code: ${code}`);
       localStorage.setItem("roomId", data.id);
       localStorage.setItem("sessionId", crypto.randomUUID());
-      navigate(`/swipe?room=${code}`);
+      navigate(`/waiting?code=${code}`);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -151,7 +168,22 @@ const RoomSetup = () => {
                   <SelectTrigger id="genre">
                     <SelectValue placeholder="Select a genre" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-h-[300px]">
+                    {customGenres.length > 0 && (
+                      <>
+                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                          ✨ Special Picks
+                        </div>
+                        {customGenres.map((g) => (
+                          <SelectItem key={g.id} value={g.name}>
+                            {g.emoji} {g.name}
+                          </SelectItem>
+                        ))}
+                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground mt-2">
+                          🎬 Classic Genres
+                        </div>
+                      </>
+                    )}
                     {genres.map((g) => (
                       <SelectItem key={g} value={g}>
                         {g}

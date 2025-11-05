@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      custom_genres: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          emoji: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          emoji?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          emoji?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+        }
+        Relationships: []
+      }
+      friendships: {
+        Row: {
+          created_at: string | null
+          friend_id: string
+          id: string
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          friend_id: string
+          id?: string
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          friend_id?: string
+          id?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friendships_friend_id_fkey"
+            columns: ["friend_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "friendships_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       matches: {
         Row: {
           id: string
@@ -43,6 +109,45 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          age: number | null
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          display_name: string | null
+          id: string
+          phone: string | null
+          sex: string | null
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          age?: number | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id: string
+          phone?: string | null
+          sex?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          age?: number | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          sex?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
       rooms: {
         Row: {
           code: string
@@ -50,6 +155,8 @@ export type Database = {
           expires_at: string
           genre: string | null
           id: string
+          invited_friends: string[] | null
+          is_friend_room: boolean | null
           user1_id: string | null
           user2_id: string | null
         }
@@ -59,6 +166,8 @@ export type Database = {
           expires_at?: string
           genre?: string | null
           id?: string
+          invited_friends?: string[] | null
+          is_friend_room?: boolean | null
           user1_id?: string | null
           user2_id?: string | null
         }
@@ -68,8 +177,37 @@ export type Database = {
           expires_at?: string
           genre?: string | null
           id?: string
+          invited_friends?: string[] | null
+          is_friend_room?: boolean | null
           user1_id?: string | null
           user2_id?: string | null
+        }
+        Relationships: []
+      }
+      streaming_links: {
+        Row: {
+          created_at: string | null
+          id: string
+          movie_id: string
+          platform: string
+          region: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          movie_id: string
+          platform: string
+          region?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          movie_id?: string
+          platform?: string
+          region?: string | null
+          url?: string
         }
         Relationships: []
       }

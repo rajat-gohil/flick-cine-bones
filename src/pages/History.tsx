@@ -1,12 +1,36 @@
+import { useState, useEffect } from "react";
 import MovieCard from "@/components/MovieCard";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
 import moviesData from "@/data/movies.json";
+import { supabase } from "@/integrations/supabase/client";
 
 const History = () => {
+  const [streamingLinks, setStreamingLinks] = useState<any[]>([]);
+
+  useEffect(() => {
+    loadStreamingLinks();
+  }, []);
+
+  const loadStreamingLinks = async () => {
+    const { data } = await supabase
+      .from("streaming_links")
+      .select("*");
+    
+    if (data) {
+      setStreamingLinks(data);
+    }
+  };
+
+  const getStreamingLinksForMovie = (movieId: string) => {
+    return streamingLinks.filter(link => link.movie_id === movieId.toString());
+  };
+
   // Simulate some history with liked/disliked status
   const historyMovies = moviesData.slice(0, 8).map((movie, index) => ({
     ...movie,
-    isLiked: index % 2 === 0, // Alternate between liked and disliked
+    isLiked: index % 2 === 0,
   }));
 
   return (
@@ -44,18 +68,40 @@ const History = () => {
 
         {/* Movies Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {historyMovies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              title={movie.title}
-              genre={movie.genre}
-              rating={movie.rating}
-              year={movie.year}
-              poster={movie.poster}
-              showActions
-              isLiked={movie.isLiked}
-            />
-          ))}
+          {historyMovies.map((movie) => {
+            const links = getStreamingLinksForMovie(movie.id.toString());
+            return (
+              <div key={movie.id} className="space-y-3">
+                <MovieCard
+                  title={movie.title}
+                  genre={movie.genre}
+                  rating={movie.rating}
+                  year={movie.year}
+                  poster={movie.poster}
+                  showActions
+                  isLiked={movie.isLiked}
+                />
+                {links.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {links.map((link) => (
+                      <Button
+                        key={link.id}
+                        size="sm"
+                        variant="outline"
+                        className="text-xs"
+                        asChild
+                      >
+                        <a href={link.url} target="_blank" rel="noopener noreferrer">
+                          {link.platform}
+                          <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      </Button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {historyMovies.length === 0 && (

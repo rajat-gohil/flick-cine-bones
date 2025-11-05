@@ -1,10 +1,32 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import MovieCard from "@/components/MovieCard";
-import { Heart, Trash2 } from "lucide-react";
+import { Heart, Trash2, ExternalLink } from "lucide-react";
 import moviesData from "@/data/movies.json";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Favorites = () => {
+  const [streamingLinks, setStreamingLinks] = useState<any[]>([]);
+
+  useEffect(() => {
+    loadStreamingLinks();
+  }, []);
+
+  const loadStreamingLinks = async () => {
+    const { data } = await supabase
+      .from("streaming_links")
+      .select("*");
+    
+    if (data) {
+      setStreamingLinks(data);
+    }
+  };
+
+  const getStreamingLinksForMovie = (movieId: string) => {
+    return streamingLinks.filter(link => link.movie_id === movieId.toString());
+  };
+
   // Simulate favorites (every other movie)
   const favoriteMovies = moviesData.filter((_, index) => index % 2 === 0);
 
@@ -38,25 +60,48 @@ const Favorites = () => {
         {/* Movies Grid */}
         {favoriteMovies.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {favoriteMovies.map((movie) => (
-              <div key={movie.id} className="relative group">
-                <MovieCard
-                  title={movie.title}
-                  genre={movie.genre}
-                  rating={movie.rating}
-                  year={movie.year}
-                  poster={movie.poster}
-                />
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity rounded-full w-8 h-8 p-0"
-                  onClick={() => handleRemove(movie.title)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            ))}
+            {favoriteMovies.map((movie) => {
+              const links = getStreamingLinksForMovie(movie.id.toString());
+              return (
+                <div key={movie.id} className="space-y-3">
+                  <div className="relative group">
+                    <MovieCard
+                      title={movie.title}
+                      genre={movie.genre}
+                      rating={movie.rating}
+                      year={movie.year}
+                      poster={movie.poster}
+                    />
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity rounded-full w-8 h-8 p-0"
+                      onClick={() => handleRemove(movie.title)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  {links.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {links.map((link) => (
+                        <Button
+                          key={link.id}
+                          size="sm"
+                          variant="outline"
+                          className="text-xs"
+                          asChild
+                        >
+                          <a href={link.url} target="_blank" rel="noopener noreferrer">
+                            {link.platform}
+                            <ExternalLink className="w-3 h-3 ml-1" />
+                          </a>
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-20 space-y-4">
