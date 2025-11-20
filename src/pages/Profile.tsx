@@ -10,6 +10,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { User, Mail, Phone, Camera } from "lucide-react";
+import { z } from "zod";
+
+const profileSchema = z.object({
+  username: z.string().trim().min(3, "Username must be at least 3 characters").max(30, "Username must be less than 30 characters").regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores").optional().or(z.literal("")),
+  display_name: z.string().trim().min(1, "Display name is required").max(100, "Display name must be less than 100 characters"),
+  age: z.number().int().min(13, "Must be at least 13 years old").max(120, "Please enter a valid age").optional().nullable(),
+  sex: z.enum(["male", "female", "other", "prefer_not_to_say"]).optional().nullable(),
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Please enter a valid phone number with country code").optional().or(z.literal("")),
+  avatar_url: z.string().url("Please enter a valid URL").max(500, "URL must be less than 500 characters").optional().or(z.literal("")),
+  bio: z.string().trim().max(500, "Bio must be less than 500 characters").optional().or(z.literal(""))
+});
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -59,24 +70,40 @@ const Profile = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
+      // Validate input data
+      const validatedProfile = profileSchema.parse({
+        username: profile.username || "",
+        display_name: profile.display_name,
+        age: profile.age ? parseInt(profile.age) : null,
+        sex: profile.sex || null,
+        phone: profile.phone || "",
+        avatar_url: profile.avatar_url || "",
+        bio: profile.bio || ""
+      });
+
       const { error } = await supabase
         .from("profiles")
         .upsert({
           id: user.id,
-          username: profile.username,
-          display_name: profile.display_name,
-          age: profile.age ? parseInt(profile.age) : null,
-          sex: profile.sex,
-          phone: profile.phone,
-          avatar_url: profile.avatar_url,
-          bio: profile.bio,
+          username: validatedProfile.username || null,
+          display_name: validatedProfile.display_name,
+          age: validatedProfile.age,
+          sex: validatedProfile.sex,
+          phone: validatedProfile.phone || null,
+          avatar_url: validatedProfile.avatar_url || null,
+          bio: validatedProfile.bio || null,
           updated_at: new Date().toISOString(),
         });
 
       if (error) throw error;
       toast.success("Profile updated successfully!");
     } catch (error: any) {
-      toast.error(error.message);
+      if (error instanceof z.ZodError) {
+        const firstError = error.errors[0];
+        toast.error(firstError.message);
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }
