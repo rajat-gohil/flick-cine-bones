@@ -9,6 +9,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
+import { z } from "zod";
+
+const authSchema = z.object({
+  email: z.string().trim().email("Please enter a valid email address").max(255, "Email must be less than 255 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters").max(72, "Password must be less than 72 characters"),
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters").optional()
+});
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -31,12 +38,19 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
+      // Validate input data
+      const validatedData = authSchema.parse({
+        email: email.trim(),
         password,
+        name: name.trim() || email.split("@")[0]
+      });
+
+      const { error } = await supabase.auth.signUp({
+        email: validatedData.email,
+        password: validatedData.password,
         options: {
           data: {
-            display_name: name,
+            display_name: validatedData.name,
           },
         },
       });
@@ -48,7 +62,12 @@ const Auth = () => {
       setPassword("");
       setName("");
     } catch (error: any) {
-      toast.error(error.message);
+      if (error instanceof z.ZodError) {
+        const firstError = error.errors[0];
+        toast.error(firstError.message);
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -59,9 +78,15 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      // Validate input data
+      const validatedData = authSchema.parse({
+        email: email.trim(),
+        password
+      });
+
       const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: validatedData.email,
+        password: validatedData.password,
       });
 
       if (error) throw error;
@@ -69,7 +94,12 @@ const Auth = () => {
       toast.success("Welcome back!");
       navigate("/");
     } catch (error: any) {
-      toast.error(error.message);
+      if (error instanceof z.ZodError) {
+        const firstError = error.errors[0];
+        toast.error(firstError.message);
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }
